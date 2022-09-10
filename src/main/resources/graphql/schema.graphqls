@@ -1,0 +1,57 @@
+type Query {
+    currencies : [Currency],
+    countries : [ Country],
+    continents : [Continent],
+    countriesByContinent(id :Int) : [ Country],
+    continentById(continentName:String) : Continent,
+    countryByIsoCode(isoCode:String) : Country,
+    currencyByCode(code:String) : Currency
+    currencyById(id:ID) : Currency
+    currenciesByNameContains(name:String) : [Currency]
+    userWallets : [Wallet],
+    walletById(id:String) : Wallet,
+    walletTransactions(walletId : String) : [WalletTransaction],
+}
+type Mutation{
+    updateCurrencyPrice(currencyPriceRequest : CurrencyPriceRequest):Currency,
+    walletTransfer(sourceWalletId :String, destinationWalletId:String, amount : Float):[Wallet],
+    addWallet(currencyCode : String, initialBalance : Float): Wallet
+
+}
+type Currency {
+    id: ID,
+    name : String,
+    code : String,
+    symbol : String,
+    price : Float,
+    countries : [Country]
+}
+type Country {
+    id : ID,
+    countryName : String,
+    isoCode : String,
+    continent : Continent
+    currency : Currency
+}
+type Continent {
+    id : ID,
+    continentName : String,
+    countries : [Country]
+}
+input CurrencyPriceRequest {
+    code : String,
+    price : Float
+}
+type Wallet {
+    id : String,
+    createdAt : Float,
+    balance : Float,
+    currency : Currency,
+    walletTransactions : [WalletTransaction]
+}
+type WalletTransaction {
+    id : Int,
+    timestamp : Float,
+    amount : Float,
+    type : String
+}
